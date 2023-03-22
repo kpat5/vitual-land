@@ -20,32 +20,68 @@ function Model() {
 }
 
 async function buyPlot(id) {
-  const web3Modal = new Web3Modal();
-  const connection = await web3Modal.connect();
-  const provider = new ethers.providers.Web3Provider(connection);
-  const signer = provider.getSigner();
-  console.log(
-    await provider.getCode("0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0")
-  );
-  console.log(landAddress);
-  //   const price = ethers.utils.parseUnits(props.price.toString(), "ether");
-  const contract = new ethers.Contract(landAddress, landAbi.abi, signer);
+  try {
+    const { ethereum } = window;
+    console.log(ethereum);
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      console.log(provider);
+      const signer = provider.getSigner();
+      console.log(signer);
+      const contract = new ethers.Contract(landAddress, landAbi.abi, signer);
+      console.log(contract);
+      let newPrice = await contract.getPrice(id);
+      // console.log(newPrice.toNumber());
+      let dim = data[id].dimension;
+      let pos = data[id].position;
+      let basePrice = data[id].price;
+      basePrice = ethers.utils.parseUnits(basePrice, "ether").toString();
+      if (newPrice == 0) newPrice = basePrice;
+      else {
+        newPrice = ethers.utils.parseUnits(newPrice, "ether");
+        // console.log(newPrice.toString());
+        newPrice = newPrice.toString();
+      }
+      let i = await contract.plots(id).plotOwner;
+      console.log(i);
+      console.log(newPrice);
+      console.log(basePrice);
+      let buy = await contract.buy(
+        id,
+        dim[0],
+        dim[1],
+        dim[2],
+        1,
+        2,
+        3,
+        basePrice,
+        {
+          value: newPrice,
+        }
+      );
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  // const web3Modal = new Web3Modal();
+  // const connection = await web3Modal.connect();
+  // const provider = new ethers.providers.Web3Provider(connection);
+  // const signer = provider.getSigner();
+  // console.log(id);
+  // const contract = new ethers.Contract(landAddress, landAbi.abi, signer);
 
-  let dim = data[id].dimension;
-  let pos = data[id].position;
-  let basePrice = 10;
-  // basePrice = ethers.utils.parseUnits(basePrice.toString(), "ether");
-  // let a = ethers.utils.parseUnits(id.toString(), "uint256");
-  // console.log(a);
-  let newPrice = await contract.getPrice(id);
+  // let dim = data[id].dimension;
+  // let pos = data[id].position;
+  // let basePrice = 10;
+  // let newPrice = await contract.getPrice(id);
   // console.log("price ", newPrice);
   // if (price == 0) newPrice = basePrice;
-  console.log(dim);
-  console.log(pos);
+
+  // console.log(pos);
   // let buy = await contract.buy(id, dim[0], dim[1], dim[2], 1, 2, 3, basePrice, {
   //   value: basePrice,
   // });
-  console.log(newPrice);
+  // console.log(newPrice);
 }
 
 function InfoBox({ id }) {
