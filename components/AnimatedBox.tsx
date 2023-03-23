@@ -5,18 +5,19 @@ import { BoxHelper } from "three";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
-import landAbi from "../artifacts/contracts/Land.sol/Land.json";
+// import landAbi from "../artifacts/contracts/Land.sol/Land.json";
 import { landAddress } from "../config";
 import InfoBox from "./InfoBox";
-import { Key } from "react";
+import { Key, Dispatch, SetStateAction } from "react";
 import router from "next/router";
 
 type Props = {
-  uid: Key | null | undefined;
+  uid: string;
   isTesting: boolean;
   position: [number, number, number];
   dimensions: [number, number, number];
   price: number;
+  setLandId: (val: string) => void;
 };
 
 async function buyPlot(props: Props) {
@@ -55,14 +56,18 @@ const AnimatedBox: React.FC<Props> = (props) => {
     // console.log("Hi");
     // if (meshRef.current) meshRef.current.rotation.z += 0.01;
   });
+
+  const onClickHandler = ()=>{
+    
+    props.setLandId(props.uid);
+    // router.push(`/info-box/[id]`, `/info-box/${props.uid}`);
+  }
   return (
     <>
       <mesh
         ref={meshRef}
         position={props.position}
-        onClick={() => {
-          router.push(`/info-box/[id]`, `/info-box/${props.uid}`);
-        }}
+        onClick={onClickHandler}
         scale={[1, 1, 1]}
       >
         <boxGeometry args={props.dimensions} />
