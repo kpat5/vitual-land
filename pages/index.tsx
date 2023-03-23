@@ -1,5 +1,6 @@
 import { Canvas, useLoader } from "@react-three/fiber";
 import AnimatedBox from "@/components/AnimatedBox";
+import { useState } from "react";
 // import CameraOrbitController from "@/components/CameraOrbitController";
 import { OrbitControls, useTexture, Sky } from "@react-three/drei";
 
@@ -40,6 +41,7 @@ const TexturedSpheres = () => {
 
 export default function Home() {
   const testing = false;
+  const [landId, setLandId] = useState("");
   return (
     <div className="container">
       <Canvas>
@@ -58,8 +60,8 @@ export default function Home() {
         <Plane width={10} height={1} position={[0, 0, 0]}>
           {data.map(
             (box: {
-              id: Key | null | undefined;
-              uid: null | undefined | Key;
+              id: string;
+              uid: string;
               position: [number, number, number];
               dimension: [number, number, number];
               price: number;
@@ -72,6 +74,7 @@ export default function Home() {
                   position={box.position}
                   dimensions={box.dimension}
                   price={box.price}
+                  setLandId={setLandId}
                 />
               );
             }
@@ -102,6 +105,13 @@ export default function Home() {
           /> */}
         </Plane>
       </Canvas>
+
+      {landId && (
+        <>
+        <p>building info</p>
+        <button onClick={()=>{setLandId("")}}>close</button>
+        </>
+      )}
     </div>
   );
 }
