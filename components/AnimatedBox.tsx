@@ -35,6 +35,7 @@ const AnimatedBox: React.FC<Props> = (props) => {
   const map = useTexture("/textures/pavement_03_diff_1k.png");
   const meshRef = useRef<THREE.Mesh>(null);
   {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     props.isTesting ? useHelper(meshRef, BoxHelper, "blue") : null;
   }
   // const handleClick = () => {

@@ -40,9 +40,11 @@ const TexturedSpheres = () => {
 };
 
 export default function Home() {
-  const testing = false;
+  const testing = true;
   const [landId, setLandId] = useState("");
   return (
+    <div>
+      <h2>Virtual Land</h2>
     <div className="container">
       <Canvas>
         <Sky
@@ -108,10 +110,11 @@ export default function Home() {
 
       {landId && (
         <>
-        <p>building info</p>
+        <p>building info {landId}</p>
         <button onClick={()=>{setLandId("")}}>close</button>
         </>
       )}
+    </div>
     </div>
   );
 }
