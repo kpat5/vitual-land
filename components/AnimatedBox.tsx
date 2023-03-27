@@ -5,7 +5,7 @@ import { BoxHelper } from "three";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
-// import landAbi from "../artifacts/contracts/Land.sol/Land.json";
+import landAbi from "../artifacts/contracts/Land.sol/Land.json";
 import { landAddress } from "../config";
 import InfoBox from "./InfoBox";
 import { Key, Dispatch, SetStateAction } from "react";
@@ -18,6 +18,8 @@ type Props = {
   dimensions: [number, number, number];
   price: number;
   setLandId: (val: string) => void;
+  setOwner: (val: string) => void;
+  setIsOwner: (val: boolean) => void;
 };
 
 async function buyPlot(props: Props) {
@@ -58,9 +60,18 @@ const AnimatedBox: React.FC<Props> = (props) => {
     // if (meshRef.current) meshRef.current.rotation.z += 0.01;
   });
 
-  const onClickHandler = () => {
+  const onClickHandler = async () => {
     props.setLandId(props.uid);
-    // router.push(`/info-box/[id]`, `/info-box/${props.uid}`);
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    // const price = ethers.utils.parseUnits(props.price.toString(), "ether");
+    let contract = new ethers.Contract(landAddress, landAbi.abi, signer);
+    let isOwn = await contract.getOwnerDetails(props.uid);
+    console.log(isOwn[0], isOwn[1]);
+    props.setIsOwner(isOwn[1]);
+    props.setOwner(isOwn[0]);
   };
   return (
     <>

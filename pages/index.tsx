@@ -3,7 +3,10 @@ import AnimatedBox from "@/components/AnimatedBox";
 import { useState } from "react";
 // import CameraOrbitController from "@/components/CameraOrbitController";
 import { OrbitControls, useTexture, Sky } from "@react-three/drei";
-
+import Web3Modal from "web3modal";
+import { ethers } from "ethers";
+import landAbi from "../artifacts/contracts/Land.sol/Land.json";
+import { landAddress } from "../config";
 import Plane from "../components/Plane";
 import InfoBox from "../components/InfoBox";
 import { Key } from "react";
@@ -89,7 +92,7 @@ export default function Home() {
   const testing = true;
   const [landId, setLandId] = useState("");
   const [owner, setOwner] = useState("");
-  const [isOwner, setIsOwner] = useState();
+  const [isOwner, setIsOwner] = useState(false);
   const [forSale, setForSale] = useState();
   const [forBid, setForBid] = useState();
   return (
@@ -127,6 +130,8 @@ export default function Home() {
                   dimensions={box.dimension}
                   price={box.price}
                   setLandId={setLandId}
+                  setOwner={setOwner}
+                  setIsOwner={setIsOwner}
                 />
               );
             }

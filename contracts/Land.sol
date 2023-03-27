@@ -82,6 +82,10 @@ contract Land{
         return plots[_id].plotOwner==payable(msg.sender)?true:false;
     }
 
+    function getOwnerDetails(uint256 _id)public view returns(address,bool){
+        return (plots[_id].plotOwner,plots[_id].plotOwner==payable(msg.sender)?true:false);
+    }
+
     function getDetails(uint256 _id)public view returns(address,uint256,uint256,bool){
         return (plots[_id].plotOwner,plots[_id].price,plots[_id].bid.currBidAmt,plots[_id].forSale);
     }
