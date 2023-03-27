@@ -58,11 +58,10 @@ const AnimatedBox: React.FC<Props> = (props) => {
     // if (meshRef.current) meshRef.current.rotation.z += 0.01;
   });
 
-  const onClickHandler = ()=>{
-    
+  const onClickHandler = () => {
     props.setLandId(props.uid);
     // router.push(`/info-box/[id]`, `/info-box/${props.uid}`);
-  }
+  };
   return (
     <>
       <mesh

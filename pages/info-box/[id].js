@@ -63,25 +63,6 @@ async function buyPlot(id) {
   } catch (err) {
     console.log(err);
   }
-  // const web3Modal = new Web3Modal();
-  // const connection = await web3Modal.connect();
-  // const provider = new ethers.providers.Web3Provider(connection);
-  // const signer = provider.getSigner();
-  // console.log(id);
-  // const contract = new ethers.Contract(landAddress, landAbi.abi, signer);
-
-  // let dim = data[id].dimension;
-  // let pos = data[id].position;
-  // let basePrice = 10;
-  // let newPrice = await contract.getPrice(id);
-  // console.log("price ", newPrice);
-  // if (price == 0) newPrice = basePrice;
-
-  // console.log(pos);
-  // let buy = await contract.buy(id, dim[0], dim[1], dim[2], 1, 2, 3, basePrice, {
-  //   value: basePrice,
-  // });
-  // console.log(newPrice);
 }
 
 function InfoBox({ id }) {
