@@ -35,6 +35,7 @@ const AnimatedBox: React.FC<Props> = (props) => {
   const map = useTexture("/textures/pavement_03_diff_1k.png");
   const meshRef = useRef<THREE.Mesh>(null);
   {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     props.isTesting ? useHelper(meshRef, BoxHelper, "blue") : null;
   }
   // const handleClick = () => {
@@ -57,11 +58,10 @@ const AnimatedBox: React.FC<Props> = (props) => {
     // if (meshRef.current) meshRef.current.rotation.z += 0.01;
   });
 
-  const onClickHandler = ()=>{
-    
+  const onClickHandler = () => {
     props.setLandId(props.uid);
     // router.push(`/info-box/[id]`, `/info-box/${props.uid}`);
-  }
+  };
   return (
     <>
       <mesh

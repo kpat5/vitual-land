@@ -39,9 +39,59 @@ const TexturedSpheres = () => {
   );
 };
 
+async function buyPlot(id) {
+  try {
+    const { ethereum } = window;
+    console.log(ethereum);
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      console.log(provider);
+      const signer = provider.getSigner();
+      console.log(signer);
+      const contract = new ethers.Contract(landAddress, landAbi.abi, signer);
+      console.log(contract);
+      let newPrice = await contract.getPrice(id);
+      // console.log(newPrice.toNumber());
+      let dim = data[id].dimension;
+      let pos = data[id].position;
+      let basePrice = data[id].price;
+      basePrice = ethers.utils.parseUnits(basePrice, "ether").toString();
+      if (newPrice == 0) newPrice = basePrice;
+      else {
+        newPrice = ethers.utils.parseUnits(newPrice, "ether");
+        // console.log(newPrice.toString());
+        newPrice = newPrice.toString();
+      }
+      let i = await contract.plots(id).plotOwner;
+      console.log(i);
+      console.log(newPrice);
+      console.log(basePrice);
+      let buy = await contract.buy(
+        id,
+        dim[0],
+        dim[1],
+        dim[2],
+        1,
+        2,
+        3,
+        basePrice,
+        {
+          value: newPrice,
+        }
+      );
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export default function Home() {
-  const testing = false;
+  const testing = true;
   const [landId, setLandId] = useState("");
+  const [owner, setOwner] = useState("");
+  const [isOwner, setIsOwner] = useState();
+  const [forSale, setForSale] = useState();
+  const [forBid, setForBid] = useState();
   return (
     <div className="container">
       <Canvas>
@@ -57,7 +107,7 @@ export default function Home() {
         <ambientLight intensity={0.3} />
         <directionalLight position={[0, 5, 5]} />
         <TexturedSpheres />
-        <Plane width={10} height={1} position={[0, 0, 0]}>
+        <Plane width={10} height={1} position={[0, 0, 0]} color={0xff00}>
           {data.map(
             (box: {
               id: string;
@@ -108,8 +158,15 @@ export default function Home() {
 
       {landId && (
         <>
-        <p>building info</p>
-        <button onClick={()=>{setLandId("")}}>close</button>
+          <p>building info {landId}</p>
+          <button>Buy</button>
+          <button
+            onClick={() => {
+              setLandId("");
+            }}
+          >
+            X
+          </button>
         </>
       )}
     </div>

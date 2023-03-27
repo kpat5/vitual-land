@@ -3,7 +3,7 @@ function Plane(props) {
   return (
     <mesh receiveShadow rotation-x={-Math.PI / 2} position={props.position}>
       <planeBufferGeometry args={[10, 10]} />
-      <meshStandardMaterial color="white" />
+      <meshStandardMaterial color="grey" />
       {props.children}
     </mesh>
   );
