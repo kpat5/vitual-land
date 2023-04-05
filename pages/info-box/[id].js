@@ -7,7 +7,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls, useTexture, Sky } from "@react-three/drei";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
-// import landAbi from "../../artifacts/contracts/Land.sol/Land.json";
+import landAbi from "../../artifacts/contracts/Land.sol/Land.json";
 import { landAddress } from "../../config";
 
 function Model() {
